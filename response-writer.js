@@ -24,6 +24,7 @@ class ResponseWriter {
         https.get(weatherApiUrl, {headers}, apiResponse => {
             let responseData = '';
             apiResponse.on('data', chunk => {
+                console.log('chunk:', chunk);
                 responseData += chunk;
             });
             apiResponse.on('end', () => {
@@ -44,6 +45,7 @@ class ResponseWriter {
     index() {
         this.htmlSuccess(`
             <h1>Exo Node</h1>
+            <p><img src="weather.jpg"></p>
             <ul>
             <li><a href="hello">Heure du serveur</a></li>
             <li><a href="weather">Météo à Montpellier</a></li>
@@ -53,6 +55,10 @@ class ResponseWriter {
     htmlSuccess(bodyContent) {
         this.res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
         this.res.end(`<html><body>${bodyContent}</body></html>`);
+    }
+    htmlError(status, message) {
+        this.res.writeHead(status, {'Content-Type': 'text/html; charset=utf-8'});
+        this.res.end(`<html><body>Erreur : ${message}</body></html>`);
     }
 }
 
